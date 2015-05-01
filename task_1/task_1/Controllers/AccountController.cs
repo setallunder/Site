@@ -177,7 +177,7 @@ namespace task_1.Controllers
                     // Uncomment to debug locally 
                     // TempData["ViewBagLink"] = callbackUrl;
 
-                    ViewBag.Message = "Проверь свой email и подтверди аккаунт.<br>Он должен быть подтвержен, чтобы ты мог войти.";
+                    ViewBag.Message = "Проверь свой email и подтверди аккаунт. Он должен быть подтвержен, чтобы ты мог войти.";
 
                     return View("Info");
 

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="PhotoAlbum" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="PhotoAlbumContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Photos" EntityType="PhotoAlbum.Photo" />
+  </EntityContainer>
+  <EntityType Name="Photo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="DateTime" Name="CreatedAt" Nullable="false" />
+    <Property Type="String" Name="PublicId" Nullable="false" />
+    <Property Type="Int32" Name="Version" Nullable="false" />
+    <Property Type="String" Name="Signature" Nullable="false" />
+    <Property Type="Int32" Name="Width" Nullable="false" />
+    <Property Type="Int32" Name="Height" Nullable="false" />
+    <Property Type="String" Name="Format" Nullable="false" />
+    <Property Type="String" Name="ResourceType" Nullable="false" />
+    <Property Type="Int32" Name="Bytes" Nullable="false" />
+    <Property Type="String" Name="Type" Nullable="false" />
+    <Property Type="String" Name="Url" Nullable="false" />
+    <Property Type="String" Name="SecureUrl" Nullable="false" />
+    <Property Type="String" Name="Path" Nullable="false" />
+  </EntityType>
+</Schema>

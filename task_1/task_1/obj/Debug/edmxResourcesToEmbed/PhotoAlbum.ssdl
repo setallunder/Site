@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PhotoAlbum.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="PhotoAlbumStoreContainer">
+    <EntitySet Name="Photos" EntityType="PhotoAlbum.Store.Photos" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Photos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+    <Property Name="PublicId" Type="nvarchar" Nullable="false" />
+    <Property Name="Version" Type="int" Nullable="false" />
+    <Property Name="Signature" Type="nvarchar" Nullable="false" />
+    <Property Name="Width" Type="int" Nullable="false" />
+    <Property Name="Height" Type="int" Nullable="false" />
+    <Property Name="Format" Type="nvarchar" Nullable="false" />
+    <Property Name="ResourceType" Type="nvarchar" Nullable="false" />
+    <Property Name="Bytes" Type="int" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" Nullable="false" />
+    <Property Name="Url" Type="nvarchar" Nullable="false" />
+    <Property Name="SecureUrl" Type="nvarchar" Nullable="false" />
+    <Property Name="Path" Type="nvarchar" Nullable="false" />
+  </EntityType>
+</Schema>

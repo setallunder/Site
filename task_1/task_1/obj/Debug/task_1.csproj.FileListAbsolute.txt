@@ -104,3 +104,4 @@ G:\itransition\task_1\task_1\obj\Debug\task_1.Migrations.Init.resources
 G:\itransition\task_1\task_1\obj\Debug\task_1.csproj.GenerateResource.Cache
 G:\itransition\task_1\task_1\bin\SendGrid.SmtpApi.dll
 G:\itransition\task_1\task_1\bin\SendGridMail.dll
+G:\itransition\task_1\task_1\bin\CloudinaryDotNet.dll

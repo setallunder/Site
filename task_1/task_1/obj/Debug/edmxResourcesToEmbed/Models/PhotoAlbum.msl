@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PhotoAlbumStoreContainer" CdmEntityContainer="PhotoAlbumContainer">
+    <EntitySetMapping Name="Photos">
+      <EntityTypeMapping TypeName="IsTypeOf(PhotoAlbum.Photo)">
+        <MappingFragment StoreEntitySet="Photos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="PublicId" ColumnName="PublicId" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Signature" ColumnName="Signature" />
+          <ScalarProperty Name="Width" ColumnName="Width" />
+          <ScalarProperty Name="Height" ColumnName="Height" />
+          <ScalarProperty Name="Format" ColumnName="Format" />
+          <ScalarProperty Name="ResourceType" ColumnName="ResourceType" />
+          <ScalarProperty Name="Bytes" ColumnName="Bytes" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="SecureUrl" ColumnName="SecureUrl" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

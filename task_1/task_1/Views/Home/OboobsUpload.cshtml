@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = " ";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+
+    </div>
+    <script src="~/Scripts/jquery-2.1.3.js"></script>
+    <script>
+    function httpGet(theUrl) {
+        var xmlHttp = null;
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, false);
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+    }
+    $.post('/Home/OboobsParse', httpGet("http://api.oboobs.ru/noise/100"));
+    </script>
+    <div align="center">
+        <h2>Выбирай!</h2>
+        @if (Model.Count > 0)
+        {
+            foreach (var p in Model)
+            {
+                    <script>
+                        document.write("<br><img id=\"");
+                        document.write("@p");
+                        document.write("\" src=\"http://media.oboobs.ru/noise_preview/");
+                        document.write("@p");
+                        document.write("\" onclick=\"SaveThePicture('");
+                        document.write("@p");
+                        document.write("')\">");
+                    </script>
+            }
+        }
+    </div>
+    <script>
+        function SaveThePicture(name) {
+            $.post('/Home/OboobsSave', name);
+            window.location.href = "Gallery";
+        }
+    </script>
+</body>
+</html>
