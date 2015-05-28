@@ -243,13 +243,6 @@ namespace task_1.Controllers
         }
 
         //
-        // GET: /Manage/Headquarters
-        public ActionResult Headquarters()
-        {
-            return View();
-        }
-
-        //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {

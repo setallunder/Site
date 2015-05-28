@@ -1,0 +1,11 @@
+﻿@model ICollection<task_1.Models.ProfileModel.Field>
+
+@using (Html.BeginForm("EditFields", "Home"))
+{
+    foreach (var field in Model)
+    {
+        <p>@{Html.RenderPartial("OneField", field);}</p>
+    }
+    <input id="Submit1" type="submit" value="Save" />
+}
+@Html.ActionLink("Add field", "AddField", "Home")

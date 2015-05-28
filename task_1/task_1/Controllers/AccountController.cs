@@ -166,6 +166,8 @@ namespace task_1.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //TODO: проверка отправки email
+
                     // await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
@@ -177,7 +179,7 @@ namespace task_1.Controllers
                     // Uncomment to debug locally 
                     // TempData["ViewBagLink"] = callbackUrl;
 
-                    ViewBag.Message = "Проверь свой email и подтверди аккаунт.<br>Он должен быть подтвержен, чтобы ты мог войти.";
+                    ViewBag.Message = "Проверь свой email и подтверди аккаунт. Он должен быть подтвержен, чтобы ты мог войти.";
 
                     return View("Info");
 
