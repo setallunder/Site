@@ -4,12 +4,12 @@
 {
     <p>
         @Html.DropDownListFor(x => x.Type, new[] {
-            new SelectListItem() {Text = "Електронная почта", Value = "Email"},
-            new SelectListItem() {Text = "Факс", Value = "Fax"},
-            new SelectListItem() {Text = "Работа", Value = "Job"},
-            new SelectListItem() {Text = "Имя", Value = "Name"},
-            new SelectListItem() {Text = "Номер телефона", Value = "Phone number"},
-            new SelectListItem() {Text = "Должность", Value = "Position"}})
+            new SelectListItem() {Text = Resources.Resource.Email, Value = "Email"},
+            new SelectListItem() {Text = Resources.Resource.Fax, Value = "Fax"},
+            new SelectListItem() {Text = Resources.Resource.Job, Value = "Job"},
+            new SelectListItem() {Text = Resources.Resource.Name, Value = "Name"},
+            new SelectListItem() {Text = Resources.Resource.PhoneNumber, Value = "Phone number"},
+            new SelectListItem() {Text = Resources.Resource.Position, Value = "Position"}})
         @Html.TextBoxFor(x => x.Value)
     </p>
 }

@@ -7,14 +7,42 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using task_1.Models;
+using task_1.Filters;
+using System.Collections.Generic;
 
 namespace task_1.Controllers
 {
+    [Culture]
     [Authorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        public ActionResult ChangeCulture(string lang)
+        {
+            string returnUrl = Request.UrlReferrer.AbsolutePath;
+
+            List<string> cultures = new List<string>() { "ru", "en" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "ru";
+            }
+
+            HttpCookie cookie = Request.Cookies["lang"];
+            if (cookie != null)
+                cookie.Value = lang;
+            else
+            {
+
+                cookie = new HttpCookie("lang");
+                cookie.HttpOnly = false;
+                cookie.Value = lang;
+                cookie.Expires = DateTime.Now.AddYears(1);
+            }
+            Response.Cookies.Add(cookie);
+            return Redirect(returnUrl);
+        }
 
         public ManageController()
         {
@@ -54,14 +82,46 @@ namespace task_1.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Ваш пароль изменен."
-                : message == ManageMessageId.SetPasswordSuccess ? "Пароль задан."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Настроен поставщик двухфакторной проверки подлинности."
-                : message == ManageMessageId.Error ? "Произошла ошибка."
-                : message == ManageMessageId.AddPhoneSuccess ? "Ваш номер телефона добавлен."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Ваш номер телефона удален."
-                : "";
+            HttpCookie cookie = Request.Cookies["lang"];
+            if (cookie != null)
+            {
+                if (cookie.Value == "en")
+                {
+                    ViewBag.StatusMessage =
+                        message == ManageMessageId.ChangePasswordSuccess ? "Your password changed."
+                        : message == ManageMessageId.SetPasswordSuccess ? "Password has been set."
+                        : message == ManageMessageId.SetTwoFactorSuccess ? "Two-factor identification has been set."
+                        : message == ManageMessageId.Error ? "Error has been aquired."
+                        : message == ManageMessageId.AddPhoneSuccess ? "Your phone number has been added."
+                        : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number has been deleted."
+                        : "";
+
+                }
+                else
+                {
+                    ViewBag.StatusMessage =
+                        message == ManageMessageId.ChangePasswordSuccess ? Resources.Resource.YourPasswordChanged
+                        : message == ManageMessageId.SetPasswordSuccess ? Resources.Resource.PasswordIsSet
+                        : message == ManageMessageId.SetTwoFactorSuccess ? Resources.Resource.ConfiguredTwoFactIdentification
+                        : message == ManageMessageId.Error ? Resources.Resource.ErrorAquired
+                        : message == ManageMessageId.AddPhoneSuccess ? Resources.Resource.YourPhoneNumberHasBeenAdded
+                        : message == ManageMessageId.RemovePhoneSuccess ? Resources.Resource.YourPhoneNumberIsDeleted
+                        : "";
+
+                }
+            }
+            else
+            {
+                ViewBag.StatusMessage =
+                    message == ManageMessageId.ChangePasswordSuccess ? Resources.Resource.YourPasswordChanged
+                    : message == ManageMessageId.SetPasswordSuccess ? Resources.Resource.PasswordIsSet
+                    : message == ManageMessageId.SetTwoFactorSuccess ? Resources.Resource.ConfiguredTwoFactIdentification
+                    : message == ManageMessageId.Error ? Resources.Resource.ErrorAquired
+                    : message == ManageMessageId.AddPhoneSuccess ? Resources.Resource.YourPhoneNumberHasBeenAdded
+                    : message == ManageMessageId.RemovePhoneSuccess ? Resources.Resource.YourPhoneNumberIsDeleted
+                    : "";
+
+            }
 
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
@@ -123,7 +183,7 @@ namespace task_1.Controllers
                 var message = new IdentityMessage
                 {
                     Destination = model.Number,
-                    Body = "Ваш код безопасности: " + code
+                    Body = Resources.Resource.YourSecurityCode + code
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
@@ -190,7 +250,7 @@ namespace task_1.Controllers
                 return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
             }
             // Это сообщение означает наличие ошибки; повторное отображение формы
-            ModelState.AddModelError("", "Не удалось проверить телефон");
+            ModelState.AddModelError("", Resources.Resource.PhoneCheckFailed);
             return View(model);
         }
 
@@ -279,8 +339,8 @@ namespace task_1.Controllers
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "Внешнее имя входа удалено."
-                : message == ManageMessageId.Error ? "Произошла ошибка."
+                message == ManageMessageId.RemoveLoginSuccess ? Resources.Resource.ExternalEntryNameHasBeenDeleted
+                : message == ManageMessageId.Error ? Resources.Resource.ErrorAquired
                 : "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)

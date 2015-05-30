@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Подтверждение учетной записи.
+        /// </summary>
+        public static string AccountConfirmation {
+            get {
+                return ResourceManager.GetString("AccountConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Добавить.
         /// </summary>
         public static string Add {
@@ -205,11 +214,56 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Проверь свой email и подтверди аккаунт. Он должен быть подтвержен, чтобы ты мог войти..
+        /// </summary>
+        public static string CheckYourEmail {
+            get {
+                return ResourceManager.GetString("CheckYourEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выбор языка.
+        /// </summary>
+        public static string ChooseLang {
+            get {
+                return ResourceManager.GetString("ChooseLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Щелкните здесь для входа.
         /// </summary>
         public static string ClickHereForEntry {
             get {
                 return ResourceManager.GetString("ClickHereForEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Код.
+        /// </summary>
+        public static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Настроен поставщик двухфакторной проверки подлинности..
+        /// </summary>
+        public static string ConfiguredTwoFactIdentification {
+            get {
+                return ResourceManager.GetString("ConfiguredTwoFactIdentification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Подтвердите вашу учетную запись, щелкнув .
+        /// </summary>
+        public static string ConfirmYourAccountByClicking {
+            get {
+                return ResourceManager.GetString("ConfirmYourAccountByClicking", resourceCulture);
             }
         }
         
@@ -259,6 +313,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Текущий пароль.
+        /// </summary>
+        public static string CurrentPassword {
+            get {
+                return ResourceManager.GetString("CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Удалить.
         /// </summary>
         public static string Delete {
@@ -277,11 +340,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Електронная почта.
+        ///   Ищет локализованную строку, похожую на Электронная почта.
         /// </summary>
         public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email не подтвержен..
+        /// </summary>
+        public static string EmailIsntConfirmed {
+            get {
+                return ResourceManager.GetString("EmailIsntConfirmed", resourceCulture);
             }
         }
         
@@ -331,6 +403,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Произошла ошибка..
+        /// </summary>
+        public static string ErrorAquired {
+            get {
+                return ResourceManager.GetString("ErrorAquired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Во время обработки запроса возникла ошибка..
         /// </summary>
         public static string ErrorAquredWhileProcessingRequest {
@@ -345,6 +426,24 @@ namespace Resources {
         public static string ExecuteEntry {
             get {
                 return ResourceManager.GetString("ExecuteEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выйти.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Внешнее имя входа удалено..
+        /// </summary>
+        public static string ExternalEntryNameHasBeenDeleted {
+            get {
+                return ResourceManager.GetString("ExternalEntryNameHasBeenDeleted", resourceCulture);
             }
         }
         
@@ -430,6 +529,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на здесь.
+        /// </summary>
+        public static string Here {
+            get {
+                return ResourceManager.GetString("Here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Информация.
         /// </summary>
         public static string Information {
@@ -493,6 +601,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Новый пароль.
+        /// </summary>
+        public static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Регистрация нового пользователя.
         /// </summary>
         public static string NewUserRegistration {
@@ -516,6 +633,33 @@ namespace Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Подтверждение пароля.
+        /// </summary>
+        public static string PasswordConfirmation {
+            get {
+                return ResourceManager.GetString("PasswordConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пароль и его подтверждение не совпадают..
+        /// </summary>
+        public static string PasswordDoesntMatch {
+            get {
+                return ResourceManager.GetString("PasswordDoesntMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пароль задан..
+        /// </summary>
+        public static string PasswordIsSet {
+            get {
+                return ResourceManager.GetString("PasswordIsSet", resourceCulture);
             }
         }
         
@@ -547,6 +691,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Не удалось проверить телефон.
+        /// </summary>
+        public static string PhoneCheckFailed {
+            get {
+                return ResourceManager.GetString("PhoneCheckFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Номер телефона.
         /// </summary>
         public static string PhoneNumber {
@@ -574,11 +727,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Профиль.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Рейтинг.
         /// </summary>
         public static string Rating {
             get {
                 return ResourceManager.GetString("Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Редактор.
+        /// </summary>
+        public static string Redactor {
+            get {
+                return ResourceManager.GetString("Redactor", resourceCulture);
             }
         }
         
@@ -601,11 +772,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Запомнить браузер?.
+        /// </summary>
+        public static string RememberBrowser {
+            get {
+                return ResourceManager.GetString("RememberBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Запомнить меня.
+        /// </summary>
+        public static string RememberMe {
+            get {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Сброс.
         /// </summary>
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сбросьте ваш пароль, щелкнув .
+        /// </summary>
+        public static string ResetYourPassworByClicking {
+            get {
+                return ResourceManager.GetString("ResetYourPassworByClicking", resourceCulture);
             }
         }
         
@@ -682,6 +880,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} должен содержать не менее {2} символов..
+        /// </summary>
+        public static string ShouldContaunNotLessThanSymbols {
+            get {
+                return ResourceManager.GetString("ShouldContaunNotLessThanSymbols", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Шаблон.
+        /// </summary>
+        public static string Template {
+            get {
+                return ResourceManager.GetString("Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Благодарим за подтверждение электронной почты..
         /// </summary>
         public static string ThanksForConfirmingEmail {
@@ -709,11 +925,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Неудачная попытка входа..
+        /// </summary>
+        public static string UseccessfulEntry {
+            get {
+                return ResourceManager.GetString("UseccessfulEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Используйте локальную учетную запись для входа..
         /// </summary>
         public static string UseLocalAccountForEntry {
             get {
                 return ResourceManager.GetString("UseLocalAccountForEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Неправильный код..
+        /// </summary>
+        public static string WrongCode {
+            get {
+                return ResourceManager.GetString("WrongCode", resourceCulture);
             }
         }
         
@@ -728,6 +962,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ваш пароль изменен..
+        /// </summary>
+        public static string YourPasswordChanged {
+            get {
+                return ResourceManager.GetString("YourPasswordChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ваш пароль сброшен..
         /// </summary>
         public static string YourPasswordReseted {
@@ -737,11 +980,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ваш номер телефона добавлен..
+        /// </summary>
+        public static string YourPhoneNumberHasBeenAdded {
+            get {
+                return ResourceManager.GetString("YourPhoneNumberHasBeenAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ваш номер телефона удален..
+        /// </summary>
+        public static string YourPhoneNumberIsDeleted {
+            get {
+                return ResourceManager.GetString("YourPhoneNumberIsDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ваш профиль.
         /// </summary>
         public static string YourProfile {
             get {
                 return ResourceManager.GetString("YourProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ваш код безопасности: .
+        /// </summary>
+        public static string YourSecurityCode {
+            get {
+                return ResourceManager.GetString("YourSecurityCode", resourceCulture);
             }
         }
         

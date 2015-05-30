@@ -1,21 +1,20 @@
 ﻿@model task_1.Models.ExternalLoginConfirmationViewModel
 @{
-    ViewBag.Title = "Регистрация";
+    ViewBag.Title = Resources.Resource.Registration;
 }
 <h2>@ViewBag.Title.</h2>
-<h3>Связывание вашей учетной записи @ViewBag.LoginProvider.</h3>
+<h3>@Resources.Resource.BindingYourAccount @ViewBag.LoginProvider.</h3>
 
 @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
 
-    <h4>Форма связи</h4>
+    <h4>@Resources.Resource.ConnectionForm</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <p class="text-info">
-        Вы успешно прошли проверку подлинности через <strong>@ViewBag.LoginProvider</strong>
-            Введите имя пользователя на этом сайте ниже и нажмите кнопку "Зарегистрировать", чтобы завершить
-            вход.
+        @Resources.Resource.YouSuccesfullyPassedIdentificatioCheckWith <strong>@ViewBag.LoginProvider</strong> 
+        @Resources.Resource.EnterUserNameAndEndEntry
     </p>
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
@@ -26,7 +25,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Регистрация" />
+            <input type="submit" class="btn btn-default" value="@Resources.Resource.Registration" />
         </div>
     </div>
 }

@@ -5,10 +5,21 @@
 <div class="jumbotron">
     <div class="well">
         <h1>Business card creator</h1>
-        <p class="lead"><b>Business card creator</b> - это замечательная возможность для создания <b>визиток!</b></p>
+        <p class="lead"><b>Business card creator</b> - @Resources.Resource.ItsAWonderfullPossibilityForCreating <b>@Resources.Resource.BusinessCardsYeling</b></p>
         <form action="Home/Search">
             <input id="Text1" name="searchRequest" type="text" />
-            <input type="submit" value="Поиск" />
+            <input type="submit" value="@Resources.Resource.Search" />
         </form>
+    </div>
+    <div>
+        @using (Html.BeginForm("ChangeCulture", "Home"))
+        {
+            <select name="lang">
+                <option disabled selected>@Resources.Resource.ChooseLang</option>
+                <option value="ru">Русский</option>
+                <option value="en">English</option>
+            </select>
+            <input type="submit" name="submit" value="@Resources.Resource.ChooseLang">
+        }
     </div>
 </div>

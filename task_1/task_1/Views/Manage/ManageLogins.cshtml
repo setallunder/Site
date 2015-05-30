@@ -1,7 +1,7 @@
 ﻿@model task_1.Models.ManageLoginsViewModel
 @using Microsoft.Owin.Security
 @{
-    ViewBag.Title = "Управление внешними именами входа";
+    ViewBag.Title = Resources.Resource.ExternalEntryNamesManagement;
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -12,7 +12,7 @@
     if (loginProviders.Count() == 0) {
         <div>
             <p>
-                Внешние службы проверки подлинности не настроены.
+                @Resources.Resource.ExternalIdentificationServicesDoesntSet
             </p>
         </div>
     }
@@ -20,7 +20,7 @@
     {
         if (Model.CurrentLogins.Count > 0)
         {
-            <h4>Зарегистрированные имена входа</h4>
+            <h4>@Resources.Resource.RegistredEntryNames</h4>
             <table class="table">
                 <tbody>
                     @foreach (var account in Model.CurrentLogins)
@@ -36,7 +36,7 @@
                                         <div>
                                             @Html.Hidden("loginProvider", account.LoginProvider)
                                             @Html.Hidden("providerKey", account.ProviderKey)
-                                            <input type="submit" class="btn btn-default" value="Удалить" title="Удалить это имя входа @account.LoginProvider из вашей учетной записи" />
+                                            <input type="submit" class="btn btn-default" value="@Resources.Resource.Delete" title="@Resources.Resource.DeleteThisEntryName @account.LoginProvider @Resources.Resource.FromYourAccount" />
                                         </div>
                                     }
                                 }
@@ -59,7 +59,7 @@
                 <p>
                     @foreach (AuthenticationDescription p in Model.OtherLogins)
                     {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Войти с помощью учетной записи @p.Caption">@p.AuthenticationType</button>
+                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="@Resources.Resource.EnterWithAccount @p.Caption">@p.AuthenticationType</button>
                     }
                 </p>
                 </div>

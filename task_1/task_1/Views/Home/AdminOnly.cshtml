@@ -1,9 +1,9 @@
 ﻿@model ICollection<task_1.Models.ProfileModel.Profile>
 @{
-    ViewBag.Title = "Только администрация";
+    ViewBag.Title = Resources.Resource.AdminOnly;
 }
 
-<h2>Администрация</h2>
+<h2>@Resources.Resource.Admin</h2>
 
 @foreach (var profile in Model)
 {
@@ -12,7 +12,7 @@
         <h3>@profile.UserName</h3>
         <form action="/Home/DeleteUser" method="post">
             <input name="userId" value="@profile.Id" type="hidden" />
-            <input type="submit" value="Удалить" />
+            <input type="submit" value="@Resources.Resource.Delete" />
         </form>
     }
 }

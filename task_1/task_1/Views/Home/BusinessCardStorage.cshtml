@@ -9,7 +9,7 @@
 </head>
 <body>
     <div>
-        <h2 align="center">It is the @Model.UserName card</h2>
+        <h2 align="center">@Model.UserName</h2>
         <br><br>
         @{
             var currentCard = Model.BusinessCards.SingleOrDefault(x => x.Url == "Current");

@@ -1,6 +1,6 @@
 ﻿@model task_1.Models.ProfileModel.Profile
 
-<h1 align="center">Результаты поиска</h1>
+<h1 align="center">@Resources.Resource.SearchResults</h1>
 <br>
 @if (Model != null)
 {
@@ -10,12 +10,12 @@
     foreach (var businessCard in Model.BusinessCards)
     {
         <p>
-            <a href="@businessCard.Url">Визитка №@index Рейтинг: @businessCard.Rating</a>
+            <a href="@businessCard.Url">@Resources.Resource.BusinessCard №@index @Resources.Resource.Rating: @businessCard.Rating</a>
         </p>
         index++;
     }
 }
 else
 {
-    <h2>Нет результатов</h2>
+    <h2>@Resources.Resource.NoResults</h2>
 }    

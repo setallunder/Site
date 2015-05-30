@@ -1,6 +1,6 @@
 ﻿@model task_1.Models.ProfileModel.Profile
 @{
-    ViewBag.Title = "Редактор визиток";
+    ViewBag.Title = Resources.Resource.BusinessCardRedactor;
 }
 
 <!doctype html>
@@ -9,14 +9,15 @@
     <title></title>
 </head>
 <body>
-    <h2>Редактор визиток</h2>
+    <h2>@Resources.Resource.BusinessCardRedactor</h2>
     <div class="col-md-10">
-        <h3 align="center">Redactor</h3>
+        <h3 align="center">@Resources.Resource.Redactor</h3>
         @if (Model.BusinessCards.Count(x => x.Url == "Edit") == 0)
         {
             using (Html.BeginForm())
             {
-                <select id="Select1" name="template" title="Template">
+                <select id="Select1" name="template" title="@Resources.Resource.Template">
+                    <option disabled selected>@Resources.Resource.Template</option>
                     <option value="Empty">Empty</option>
                     <option value="Template1">1</option>
                     <option value="Template2">2</option>
@@ -28,7 +29,7 @@
                     <option value="Template8">8</option>
                     <option value="Template9">9</option>
                 </select>
-                <input type="submit" value="Добавить" />
+                <input type="submit" value="@Resources.Resource.Add" />
             }
         }
         @if (Model.BusinessCards.Count(x => x.Url == "Raw") != 0 ||
@@ -40,14 +41,14 @@
                 editingCard = Model.BusinessCards.SingleOrDefault(x => x.Url == "Edit");
                 <form action="/Home/DeleteBusinessCard" method="post">
                     <input id="CardId" name="cardId" type="hidden" value="@editingCard.Id" />
-                    <input type="submit" value="Удалить" />
+                    <input type="submit" value="@Resources.Resource.Delete" />
                 </form>
             }
             else
             {
                 <input id="CardId" type="hidden" value="-1" />
             }
-            <input id="saveBusinessCard" type="submit" value="Сохранить" onclick="sendList()"/>
+            <input id="saveBusinessCard" type="submit" value="@Resources.Resource.Save" onclick="sendList()" />
             <br><br><br>
             <input id="templateValue" type="hidden" value="@editingCard.Template" />
             <ul id="CardArea" class="@editingCard.Template">

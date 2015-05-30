@@ -1,32 +1,32 @@
 ﻿@model task_1.Models.IndexViewModel
 @{
-    ViewBag.Title = "Управление";
+    ViewBag.Title = Resources.Resource.Management;
 }
 
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-    <h4>Изменение параметров учетной записи</h4>
+    <h4>@Resources.Resource.ChangingParametersOfAccount</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Пароль:</dt>
+        <dt>@Resources.Resource.Password:</dt>
         <dd>
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Смена пароля", "ChangePassword")
+                @Html.ActionLink(Resources.Resource.ChangePassword, "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("Создать", "SetPassword")
+                @Html.ActionLink(Resources.Resource.Create, "SetPassword")
             }
             ]
         </dd>
-        <dt>Внешние имена входа:</dt>
+        <dt>@Resources.Resource.ExternalEntryNames:</dt>
         <dd>
             @Model.Logins.Count [
-            @Html.ActionLink("Управление", "ManageLogins") ]
+            @Html.ActionLink(Resources.Resource.Management, "ManageLogins") ]
         </dd>
     </dl>
 </div>

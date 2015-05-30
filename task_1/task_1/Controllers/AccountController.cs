@@ -9,14 +9,42 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using task_1.Models;
+using task_1.Filters;
+using System.Collections.Generic;
 
 namespace task_1.Controllers
 {
+    [Culture]
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        public ActionResult ChangeCulture(string lang)
+        {
+            string returnUrl = Request.UrlReferrer.AbsolutePath;
+
+            List<string> cultures = new List<string>() { "ru", "en" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "ru";
+            }
+
+            HttpCookie cookie = Request.Cookies["lang"];
+            if (cookie != null)
+                cookie.Value = lang;
+            else
+            {
+
+                cookie = new HttpCookie("lang");
+                cookie.HttpOnly = false;
+                cookie.Value = lang;
+                cookie.Expires = DateTime.Now.AddYears(1);
+            }
+            Response.Cookies.Add(cookie);
+            return Redirect(returnUrl);
+        }
 
         public AccountController()
         {
@@ -79,7 +107,7 @@ namespace task_1.Controllers
             {
                 if (!await UserManager.IsEmailConfirmedAsync(user.Id))
                 {
-                    ViewBag.errorMessage = "Email не подтвержен.";
+                    ViewBag.errorMessage = Resources.Resource.EmailIsntConfirmed;
                     return View("Error");
                 }
             }
@@ -97,7 +125,7 @@ namespace task_1.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Неудачная попытка входа.");
+                    ModelState.AddModelError("", Resources.Resource.UseccessfulEntry);
                     return View(model);
             }
         }
@@ -140,7 +168,7 @@ namespace task_1.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Неправильный код.");
+                    ModelState.AddModelError("", Resources.Resource.WrongCode);
                     return View(model);
             }
         }
@@ -174,12 +202,12 @@ namespace task_1.Controllers
                     // Отправка сообщения электронной почты с этой ссылкой
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a><br>");
+                    await UserManager.SendEmailAsync(user.Id, Resources.Resource.AccountConfirmation, Resources.Resource.ConfirmYourAccountByClicking + "<a href=\"" + callbackUrl + "\">" + Resources.Resource.Here + "</a><br>");
 
                     // Uncomment to debug locally 
                     // TempData["ViewBagLink"] = callbackUrl;
 
-                    ViewBag.Message = "Проверь свой email и подтверди аккаунт. Он должен быть подтвержен, чтобы ты мог войти.";
+                    ViewBag.Message = Resources.Resource.CheckYourEmail;
 
                     return View("Info");
 
@@ -233,7 +261,7 @@ namespace task_1.Controllers
                 // Отправка сообщения электронной почты с этой ссылкой
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Сброс пароля", "Сбросьте ваш пароль, щелкнув <a href=\"" + callbackUrl + "\">здесь</a><br>");
+                await UserManager.SendEmailAsync(user.Id, Resources.Resource.PasswordReset, Resources.Resource.ResetYourPassworByClicking + "<a href=\"" + callbackUrl + "\">" + Resources.Resource.Here + "</a><br>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 

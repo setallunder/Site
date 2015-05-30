@@ -190,7 +190,7 @@
     <value>Удалить это имя входа</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>Електронная почта</value>
+    <value>Электронная почта</value>
   </data>
   <data name="EnterCheckCode" xml:space="preserve">
     <value>Введите проверочный код</value>
@@ -348,5 +348,95 @@
   </data>
   <data name="YouSuccesfullyPassedIdentificatioCheckWith" xml:space="preserve">
     <value>Вы успешно прошли проверку подлинности через</value>
+  </data>
+  <data name="ChooseLang" xml:space="preserve">
+    <value>Выбор языка</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="Template" xml:space="preserve">
+    <value>Шаблон</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="Redactor" xml:space="preserve">
+    <value>Редактор</value>
+  </data>
+  <data name="AccountConfirmation" xml:space="preserve">
+    <value>Подтверждение учетной записи</value>
+  </data>
+  <data name="CheckYourEmail" xml:space="preserve">
+    <value>Проверь свой email и подтверди аккаунт. Он должен быть подтвержен, чтобы ты мог войти.</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="ConfiguredTwoFactIdentification" xml:space="preserve">
+    <value>Настроен поставщик двухфакторной проверки подлинности.</value>
+  </data>
+  <data name="ConfirmYourAccountByClicking" xml:space="preserve">
+    <value>Подтвердите вашу учетную запись, щелкнув </value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Текущий пароль</value>
+  </data>
+  <data name="EmailIsntConfirmed" xml:space="preserve">
+    <value>Email не подтвержен.</value>
+  </data>
+  <data name="ErrorAquired" xml:space="preserve">
+    <value>Произошла ошибка.</value>
+  </data>
+  <data name="ExternalEntryNameHasBeenDeleted" xml:space="preserve">
+    <value>Внешнее имя входа удалено.</value>
+  </data>
+  <data name="Here" xml:space="preserve">
+    <value>здесь</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="PasswordConfirmation" xml:space="preserve">
+    <value>Подтверждение пароля</value>
+  </data>
+  <data name="PasswordDoesntMatch" xml:space="preserve">
+    <value>Пароль и его подтверждение не совпадают.</value>
+  </data>
+  <data name="PasswordIsSet" xml:space="preserve">
+    <value>Пароль задан.</value>
+  </data>
+  <data name="PhoneCheckFailed" xml:space="preserve">
+    <value>Не удалось проверить телефон</value>
+  </data>
+  <data name="RememberBrowser" xml:space="preserve">
+    <value>Запомнить браузер?</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Запомнить меня</value>
+  </data>
+  <data name="ResetYourPassworByClicking" xml:space="preserve">
+    <value>Сбросьте ваш пароль, щелкнув </value>
+  </data>
+  <data name="ShouldContaunNotLessThanSymbols" xml:space="preserve">
+    <value>{0} должен содержать не менее {2} символов.</value>
+  </data>
+  <data name="UseccessfulEntry" xml:space="preserve">
+    <value>Неудачная попытка входа.</value>
+  </data>
+  <data name="WrongCode" xml:space="preserve">
+    <value>Неправильный код.</value>
+  </data>
+  <data name="YourPasswordChanged" xml:space="preserve">
+    <value>Ваш пароль изменен.</value>
+  </data>
+  <data name="YourPhoneNumberHasBeenAdded" xml:space="preserve">
+    <value>Ваш номер телефона добавлен.</value>
+  </data>
+  <data name="YourPhoneNumberIsDeleted" xml:space="preserve">
+    <value>Ваш номер телефона удален.</value>
+  </data>
+  <data name="YourSecurityCode" xml:space="preserve">
+    <value>Ваш код безопасности: </value>
   </data>
 </root>

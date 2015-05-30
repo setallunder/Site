@@ -1,14 +1,14 @@
 ﻿@model task_1.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
-<h4>Используйте для входа другую службу.</h4>
+<h4>@Resources.Resource.ForEntryUseAnotherService</h4>
 <hr />
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0) {
         <div>
             <p>
-                Внешние службы проверки подлинности не настроены.
+                @Resources.Resource.ExternalIdentificationServicesDoesntSet
             </p>
         </div>
     }
@@ -19,7 +19,7 @@
                 <p>
                     @foreach (AuthenticationDescription p in loginProviders)
                     {
-                        <button type="submit" class="zocial @p.AuthenticationType.ToLower()" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Войти с помощью учетной записи @p.Caption">@p.AuthenticationType</button>
+                        <button type="submit" class="zocial @p.AuthenticationType.ToLower()" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="@Resources.Resource.EnterWithAccount @p.Caption">@p.AuthenticationType</button>
                     }
                 </p>
             </div>

@@ -28,14 +28,14 @@ namespace task_1.Models
     public class SetPasswordViewModel
     {
         [Required]
-        [StringLength(100, ErrorMessage = "Значение {0} должно содержать символов не менее: {2}.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceName = "ShouldContaunNotLessThanSymbols", ErrorMessageResourceType = typeof(Resources.Resource), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Новый пароль")]
+        [Display(Name = "NewPassword", ResourceType = typeof(Resources.Resource))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение нового пароля")]
-        [Compare("NewPassword", ErrorMessage = "Новый пароль и его подтверждение не совпадают.")]
+        [Display(Name = "PasswordConfirmation", ResourceType = typeof(Resources.Resource))]
+        [Compare("NewPassword", ErrorMessageResourceName = "PasswordDoesntMatch", ErrorMessageResourceType = typeof(Resources.Resource))]
         public string ConfirmPassword { get; set; }
     }
 
@@ -43,18 +43,18 @@ namespace task_1.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Текущий пароль")]
+        [Display(Name = "CurrentPassword", ResourceType = typeof(Resources.Resource))]
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Значение {0} должно содержать символов не менее: {2}.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceName = "ShouldContaunNotLessThanSymbols", ErrorMessageResourceType = typeof(Resources.Resource), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Новый пароль")]
+        [Display(Name = "NewPassword", ResourceType = typeof(Resources.Resource))]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение нового пароля")]
-        [Compare("NewPassword", ErrorMessage = "Новый пароль и его подтверждение не совпадают.")]
+        [Display(Name = "PasswordConfirmation", ResourceType = typeof(Resources.Resource))]
+        [Compare("NewPassword", ErrorMessageResourceName = "PasswordDoesntMatch", ErrorMessageResourceType = typeof(Resources.Resource))]
         public string ConfirmPassword { get; set; }
     }
 
@@ -62,19 +62,19 @@ namespace task_1.Models
     {
         [Required]
         [Phone]
-        [Display(Name = "Номер телефона")]
+        [Display(Name = "PhoneNumber", ResourceType = typeof(Resources.Resource))]
         public string Number { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel
     {
         [Required]
-        [Display(Name = "Код")]
+        [Display(Name = "Code", ResourceType = typeof(Resources.Resource))]
         public string Code { get; set; }
 
         [Required]
         [Phone]
-        [Display(Name = "Номер телефона")]
+        [Display(Name = "PhoneNumber", ResourceType = typeof(Resources.Resource))]
         public string PhoneNumber { get; set; }
     }
 
