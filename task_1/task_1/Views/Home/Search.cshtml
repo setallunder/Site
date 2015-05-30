@@ -1,0 +1,21 @@
+﻿@model task_1.Models.ProfileModel.Profile
+
+<h1 align="center">Результаты поиска</h1>
+<br>
+@if (Model != null)
+{
+    
+    <br>
+    var index = 1;
+    foreach (var businessCard in Model.BusinessCards)
+    {
+        <p>
+            <a href="@businessCard.Url">Визитка №@index Рейтинг: @businessCard.Rating</a>
+        </p>
+        index++;
+    }
+}
+else
+{
+    <h2>Нет результатов</h2>
+}    

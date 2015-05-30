@@ -1,6 +1,6 @@
 ﻿@model task_1.Models.ProfileModel.Profile
 @{
-    ViewBag.Title = "BusinessCardRedactor";
+    ViewBag.Title = "Редактор визиток";
 }
 
 <!doctype html>
@@ -9,7 +9,7 @@
     <title></title>
 </head>
 <body>
-    <h2>BusinessCardRedactor</h2>
+    <h2>Редактор визиток</h2>
     <div class="col-md-10">
         <h3 align="center">Redactor</h3>
         @if (Model.BusinessCards.Count(x => x.Url == "Edit") == 0)
@@ -18,17 +18,17 @@
             {
                 <select id="Select1" name="template" title="Template">
                     <option value="Empty">Empty</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
+                    <option value="Template1">1</option>
+                    <option value="Template2">2</option>
+                    <option value="Template3">3</option>
+                    <option value="Template4">4</option>
+                    <option value="Template5">5</option>
+                    <option value="Template6">6</option>
+                    <option value="Template7">7</option>
+                    <option value="Template8">8</option>
+                    <option value="Template9">9</option>
                 </select>
-                <input type="submit" value="Add" />
+                <input type="submit" value="Добавить" />
             }
         }
         @if (Model.BusinessCards.Count(x => x.Url == "Raw") != 0 ||
@@ -38,239 +38,38 @@
             if (editingCard == null)
             {
                 editingCard = Model.BusinessCards.SingleOrDefault(x => x.Url == "Edit");
-                <input id="CardId" type="hidden" value="@editingCard.Id" />
+                <form action="/Home/DeleteBusinessCard" method="post">
+                    <input id="CardId" name="cardId" type="hidden" value="@editingCard.Id" />
+                    <input type="submit" value="Удалить" />
+                </form>
             }
             else
             {
                 <input id="CardId" type="hidden" value="-1" />
             }
-            <input id="saveBusinessCard" type="submit" value="Save" onclick="sendList()" />
-            <input id="deleteBusinessCard" type="submit" value="Delete" onclick="sendForDelete()" />
+            <input id="saveBusinessCard" type="submit" value="Сохранить" onclick="sendList()"/>
             <br><br><br>
-            if (editingCard.Template == "Empty")
-            {
-                <input id="templateValue" type="hidden" value="Empty" />
-                <div id="EmptyTemplate">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit") 
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "1")
-            {
-                <input id="templateValue" type="hidden" value="1" />
-                <div id="Template1">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "2")
-            {
-                <input id="templateValue" type="hidden" value="2" />
-                <div id="Template2">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "3")
-            {
-                <input id="templateValue" type="hidden" value="3" />
-                <div id="Template3">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "4")
-            {
-                <input id="templateValue" type="hidden" value="4" />
-                <div id="Template4">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "5")
-            {
-                <input id="templateValue" type="hidden" value="5" />
-                <div id="Template5">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "6")
-            {
-                <input id="templateValue" type="hidden" value="6" />
-                <div id="Template6">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "7")
-            {
-                <input id="templateValue" type="hidden" value="7" />
-                <div id="Template7">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "8")
-            {
-                <input id="templateValue" type="hidden" value="8" />
-                <div id="Template8">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
-            else if (editingCard.Template == "9")
-            {
-                <input id="templateValue" type="hidden" value="9" />
-                <div id="Template9">
-                    <ul id="CardArea">
-                        @if (editingCard.Url == "Edit")
-                        {
-                            foreach (var f in editingCard.Fields)
-                            {
-                                <li>@f.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < 8; i++)
-                            {
-                                <li> </li>
-                            }
-                        }
-                    </ul>
-                </div>
-            }
+            <input id="templateValue" type="hidden" value="@editingCard.Template" />
+            <ul id="CardArea" class="@editingCard.Template">
+                @if (editingCard.Url == "Edit") 
+                {
+                    foreach (var f in editingCard.Fields)
+                    {
+                        <li>@f.Value</li>
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        <li> </li>
+                    }
+                }
+            </ul>
         }
     </div>
     <div class="col-md-2">
-        <h3>Tools</h3>
+        <h3>Fields</h3>
         <div id="tools" style="height:390px;width:200px;overflow:auto">
             <ul id="fields">
                 @foreach (var field in Model.Fields)
@@ -280,122 +79,30 @@
             </ul>
         </div>
     </div>
+    <script src="~/Scripts/SortableCardArea.js"></script>
     <script>
-    $(document).ready(function () {
-        $('#CardArea, #fields').sortable({
-            connectWith: "#CardArea, #fields"
-        }).disableSelection();
-    });
     function sendList() {
         var id = document.getElementById("CardId").value;
-        $.ajax({
+        return $.ajax({
+            type: 'POST',
+            url: "/Home/SaveBusinessCard",
+            success: function(response) {
+                return window.location.href = "UserProfile";
+            },
             data: {
-                fields: $("#CardArea li").map(function () {
+                fields: $("#CardArea li").map(function() {
                     return $(this).text();
                 }).get().join(),
                 template: document.getElementById("templateValue").value,
                 cardId: id
-            },
-            type: 'POST',
-            url: "/Home/SaveBusinessCard",
-            success: function (response) {
-                window.location.href = "UserProfile"
             }
         });
-    }
-    function sendForDelete() {
-        var id = document.getElementById("CardId").value;
-        $.ajax({
-            data: {
-                cardId : id
-            },
-            type: 'POST',
-            url: "/Home/DeleteBusinessCard",
-            success: function (response) {
-                window.location.href = "UserProfile"
-            }
-        });
-    }
+    };
     </script>
+    <link href="~/Content/BusinessCardsStyle.css" rel="stylesheet" />
     <style>
-        #CardArea {
-            min-height: 200px;
-            max-height: 200px;
-            min-width: 400px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: auto;
-            margin-top: auto;
-        }
         #CardArea li{
-            margin: 3px 2.5px 0px 2.5px; 
-            padding: 1px; 
-            float: left; 
-            width: 195px; 
-            height: 46px; 
-            font-size: 1em; 
-            text-align: left;
             border: dashed;
-        }
-        #EmptyTemplate, #Template1, #Template2, 
-        #Template3, #Template4, #Template5, #Template6, 
-        #Template7, #Template8, #Template9{
-            min-height: 200px;
-            max-height: 200px;
-            min-width: 400px;
-            max-width: 400px;
-            background-image: url("../../Content/EmptyTemplate.bmp");
-            background-repeat: no-repeat;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: auto;
-            margin-top: auto;
-        }
-        #Template1{
-            background-image: url("../../Content/Template1.bmp");
-        }
-        #Template2{
-            background-image: url("../../Content/Template2.bmp");
-        }
-        #Template3{
-            background-image: url("../../Content/Template3.bmp");
-        }
-        #Template4{
-            background-image: url("../../Content/Template4.bmp");
-        }
-        #Template5{
-            background-image: url("../../Content/Template5.bmp");
-        }
-        #Template6{
-            background-image: url("../../Content/Template6.bmp");
-        }
-        #Template7{
-            background-image: url("../../Content/Template7.bmp");
-        }
-        #Template8{
-            background-image: url("../../Content/Template8.bmp");
-        }
-        #Template9{
-            background-image: url("../../Content/Template9.bmp");
-        }
-        #fields{
-            min-height: 370px;
-        }
-        #tools{
-            border: groove;
-            border-color: black;
-            background-color: white;
-        }
-        ul{
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-        li{
-            padding: 0;
-            margin: 0;
-            list-style-type: none;
         }
     </style>
 </body>

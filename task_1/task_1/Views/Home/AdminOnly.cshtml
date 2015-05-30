@@ -1,7 +1,18 @@
-﻿
+﻿@model ICollection<task_1.Models.ProfileModel.Profile>
 @{
-    ViewBag.Title = "AdminOnly";
+    ViewBag.Title = "Только администрация";
 }
 
-<h2>AdminOnly</h2>
-<h3>You such a wonderfull admin!</h3>
+<h2>Администрация</h2>
+
+@foreach (var profile in Model)
+{
+    if(profile.UserName != User.Identity.Name)
+    {
+        <h3>@profile.UserName</h3>
+        <form action="/Home/DeleteUser" method="post">
+            <input name="userId" value="@profile.Id" type="hidden" />
+            <input type="submit" value="Удалить" />
+        </form>
+    }
+}

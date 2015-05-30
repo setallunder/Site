@@ -12,7 +12,6 @@ namespace task_1.Models.ProfileModel
         public ProfileModelContext()
             : base("UsersProfiles")
         {
-            //TODO: cascade deletion problem, should delete many-to-many table first
         }
 
         public DbSet<Profile> Profile { get; set; }
@@ -22,7 +21,7 @@ namespace task_1.Models.ProfileModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            OneToManyLinkProfileToUserData(modelBuilder); //TODO: nice solution for linking
+            OneToManyLinkProfileToUserData(modelBuilder);
         }
 
         private static void OneToManyLinkProfileToUserData(DbModelBuilder modelBuilder)
@@ -36,7 +35,7 @@ namespace task_1.Models.ProfileModel
             modelBuilder.Entity<Profile>()
                 .HasMany(x => x.BusinessCards)
                 .WithOptional()
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
         }
 
         private static void SetLinkToFields(DbModelBuilder modelBuilder)

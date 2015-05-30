@@ -7,12 +7,39 @@ using task_1.Models;
 using Microsoft.AspNet.Identity;
 using task_1.Models.ProfileModel;
 using System.IO;
+using task_1.Filters;
 
 namespace task_1.Controllers
 {
+    [Culture]
     [RequireHttps]
     public class HomeController : Controller
     {
+        public ActionResult ChangeCulture(string lang)
+        {
+            string returnUrl = Request.UrlReferrer.AbsolutePath;
+
+            List<string> cultures = new List<string>() { "ru", "en" };
+            if (!cultures.Contains(lang))
+            {
+                lang = "ru";
+            }
+
+            HttpCookie cookie = Request.Cookies["lang"];
+            if (cookie != null)
+                cookie.Value = lang;
+            else
+            {
+
+                cookie = new HttpCookie("lang");
+                cookie.HttpOnly = false;
+                cookie.Value = lang;
+                cookie.Expires = DateTime.Now.AddYears(1);
+            }
+            Response.Cookies.Add(cookie);
+            return Redirect(returnUrl);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Index()
@@ -20,18 +47,34 @@ namespace task_1.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Index(SearchRequest request)
+        [Authorize(Roles="Admin")]
+        [HttpGet]
+        public ActionResult AdminOnly()
         {
-            //TODO: search request processing
-            return View();
+            var context = new ProfileModelContext();
+            var profiles = from line in context.Profile
+                           select line;
+            return View(profiles.ToList());
         }
 
         [Authorize(Roles="Admin")]
-        public ActionResult AdminOnly()
+        [HttpPost]
+        public ActionResult DeleteUser(int userId)
         {
-            return View();
+            var context = new ProfileModelContext();
+            var profile = context.Profile.SingleOrDefault(x => x.Id == userId);
+            var defaultContext = new ApplicationDbContext();
+            var defaultProfile = defaultContext.Users.SingleOrDefault(x => x.UserName == profile.UserName);
+            defaultContext.Users.Remove(defaultProfile);
+            foreach (var card in profile.BusinessCards)
+            {
+                var fields = context.BusinessCardsToFields.Where(x => x.BusinessCardId == card.Id);
+                context.BusinessCardsToFields.RemoveRange(fields);
+            }
+            context.Profile.Remove(profile);
+            defaultContext.SaveChanges();
+            context.SaveChanges();
+            return RedirectToAction("AdminOnly");
         }
 
         [HttpGet]
@@ -170,7 +213,7 @@ namespace task_1.Controllers
 
         [HttpPost]
         [Authorize]
-        public void DeleteBusinessCard(int cardId)
+        public ActionResult DeleteBusinessCard(int cardId)
         {
             var context = new ProfileModelContext();
             context.BusinessCards.Remove(context.BusinessCards.SingleOrDefault(x => x.Id == cardId));
@@ -182,6 +225,7 @@ namespace task_1.Controllers
                 context.BusinessCardsToFields.Remove(cf);
             }
             context.SaveChanges();
+            return RedirectToAction("UserProfile");
         }
 
         [HttpGet]
@@ -248,6 +292,25 @@ namespace task_1.Controllers
             {
                 context.BusinessCards.SingleOrDefault(x => x.Id == id).Rating += howMuch;
                 context.SaveChanges();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Search(string searchRequest)
+        {
+            var profileSearch = new ProfileSearch();
+            profileSearch.Index();
+            var profiles = profileSearch.Find(searchRequest);
+            if (profiles.Count(x => x != null) != 0)
+            {
+                int id = profiles.ElementAt(0).Id;
+                var context = new ProfileModelContext();
+                var profile = context.Profile.SingleOrDefault(x => x.Id == id);
+                return View(profile);
+            }
+            else
+            {
+                return View();
             }
         }
     }

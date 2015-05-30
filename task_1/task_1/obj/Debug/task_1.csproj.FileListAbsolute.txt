@@ -216,3 +216,8 @@ G:\itransition\kursSite\task_1\task_1\bin\ICSharpCode.SharpZipLib.dll
 G:\itransition\kursSite\task_1\task_1\bin\Lucene.Net.dll
 G:\itransition\kursSite\task_1\task_1\bin\Lucene.Net.pdb
 G:\itransition\kursSite\task_1\task_1\bin\Lucene.Net.xml
+G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Migrations.AddingCascadeDeletionForBusinessCards.resources
+G:\itransition\kursSite\task_1\task_1\bin\en\task_1.resources.dll
+G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Resources.Resource.resources
+G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Resources.Resource.en.resources
+G:\itransition\kursSite\task_1\task_1\obj\Debug\en\task_1.resources.dll

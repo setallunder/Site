@@ -1,16 +1,14 @@
-﻿@model task_1.Models.SearchRequest
-@{
-    ViewBag.Title = "Товарищество";
+﻿@{
+    ViewBag.Title = "Business card creator";
 }
 
 <div class="jumbotron">
     <div class="well">
-        <h1>Товарищество</h1>
-        <p class="lead">Товарищество - это бесплатное сетевое сообщество, где каждый может быть <b>Товарищем</b>!</p>
-        @using (Html.BeginForm())
-        {
-            @Html.TextBoxFor(x => x.Line)
-            <input type="submit" value="Поиск"/>
-        }
+        <h1>Business card creator</h1>
+        <p class="lead"><b>Business card creator</b> - это замечательная возможность для создания <b>визиток!</b></p>
+        <form action="Home/Search">
+            <input id="Text1" name="searchRequest" type="text" />
+            <input type="submit" value="Поиск" />
+        </form>
     </div>
 </div>
