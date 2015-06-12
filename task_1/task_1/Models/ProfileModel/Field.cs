@@ -11,5 +11,7 @@ namespace task_1.Models.ProfileModel
         public int Id { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+        public int OffsetTop { get; set; }
+        public int OffsetLeft { get; set; }
     }
 }

@@ -439,4 +439,7 @@
   <data name="YourSecurityCode" xml:space="preserve">
     <value>Ваш код безопасности: </value>
   </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Сохранено</value>
+  </data>
 </root>

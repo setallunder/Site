@@ -28,6 +28,12 @@
                     <li>
                         @Html.ActionLink(Resources.Resource.Profile, "UserProfile", "Home")
                     </li>
+                    @if(User.IsInRole("Admin"))
+                    {
+                        <li>
+                            @Html.ActionLink(Resources.Resource.Management, "AdminOnly", "Home")
+                        </li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -7,6 +7,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -15,16 +16,15 @@ namespace task_1.Models.ProfileModel
 {
     public class ProfileSearch
     {
-        private const string Path = @"G:\itransition\kursSite\LuceneIndexes";
+        private static readonly string Path = ConfigurationManager.AppSettings["pathToLuceneIndexes"];
 
-        private const string idName = "Id";
         private const string userName = "UserName";
 
-        private const int Size = 10;
+        private const int SIZE = 10;
 
-        private readonly Lucene.Net.Util.Version _version = Lucene.Net.Util.Version.LUCENE_29;
+        private static readonly Lucene.Net.Util.Version version = Lucene.Net.Util.Version.LUCENE_29;
 
-        private readonly Analyzer _analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
+        private static readonly Analyzer analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29);
 
         public void Index()
         {
@@ -41,7 +41,7 @@ namespace task_1.Models.ProfileModel
                 entityDirectory = FSDirectory.Open(indexDirectory);
                 writer = new IndexWriter(
                   entityDirectory,
-                  _analyzer,
+                  analyzer,
                   true,
                   IndexWriter.MaxFieldLength.UNLIMITED);
 
@@ -53,7 +53,7 @@ namespace task_1.Models.ProfileModel
 
                         document.Add(
                           new Lucene.Net.Documents.Field(
-                            idName,
+                            "Id",
                             profile.Id.ToString(),
                             Lucene.Net.Documents.Field.Store.YES,
                             Lucene.Net.Documents.Field.Index.NOT_ANALYZED,
@@ -61,7 +61,7 @@ namespace task_1.Models.ProfileModel
 
                         document.Add(
                           new Lucene.Net.Documents.Field(
-                            userName,
+                            "UserName",
                             profile.UserName,
                             Lucene.Net.Documents.Field.Store.YES,
                             Lucene.Net.Documents.Field.Index.ANALYZED,
@@ -86,7 +86,9 @@ namespace task_1.Models.ProfileModel
         public IEnumerable<Profile> Find(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
+            {
                 return Enumerable.Empty<Profile>();
+            }
 
             var indexDirectory = new DirectoryInfo(Path);
 
@@ -115,16 +117,16 @@ namespace task_1.Models.ProfileModel
         private IEnumerable<KeyValuePair<int, Profile>> FindDocumentProfiles(string query, Searcher searcher)
         {
             var parser = new MultiFieldQueryParser(
-              _version,
-              new[] { userName },
-              _analyzer);
+              version,
+              new[] { "UserName" },
+              analyzer);
 
-            var scoreDocs = searcher.Search(parser.Parse(query), Size).ScoreDocs;
+            var scoreDocs = searcher.Search(parser.Parse(query), SIZE).ScoreDocs;
 
             var documentProfilesIds = scoreDocs.Select(x => new KeyValuePair<int, int>
             (
               x.Doc,
-              int.Parse(searcher.Doc(x.Doc).Get(idName))
+              int.Parse(searcher.Doc(x.Doc).Get("Id"))
             )).ToList();
 
             var profilesIds = documentProfilesIds.Select(db => db.Value);

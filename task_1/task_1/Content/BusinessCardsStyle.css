@@ -5,18 +5,9 @@
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: auto;
-    margin-top: auto;
+    margin-top: 30px;
 }
-#CardArea li{
-    margin: 3px 2.5px 0px 2.5px; 
-    padding: 1px; 
-    float: left; 
-    width: 195px; 
-    height: 46px; 
-    font-size: 1em; 
-    text-align: left;
-}
+
 ul.Empty, ul.Template1, ul.Template2,
 ul.Template3, ul.Template4, ul.Template5, ul.Template6,
 ul.Template7, ul.Template8, ul.Template9 {
@@ -85,6 +76,7 @@ ul {
 }
 
 li {
+    max-width: 100px;
     padding: 0;
     margin: 0;
     list-style-type: none;

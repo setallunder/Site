@@ -1,4 +1,4 @@
-﻿@model task_1.Models.ProfileModel.Profile
+﻿@model Tuple<string, task_1.Models.BusinessCard>
 
 <!DOCTYPE html>
 
@@ -8,36 +8,68 @@
     <title></title>
 </head>
 <body>
-    <div>
-        <h2 align="center">@Model.UserName</h2>
-        <br><br>
+    <div class="col-md-10">
+        <h2 align="center">@Model.Item1</h2>
+        <br>
+        <br>
         @{
-            var currentCard = Model.BusinessCards.SingleOrDefault(x => x.Url == "Current");
-            <ul id="CardArea" class="@currentCard.Template">
-                @foreach (var field in currentCard.Fields)
+            <ul id="CardArea" class="@Model.Item2.Template">
+                @foreach (var field in Model.Item2.Fields)
                 {
-                    if(field.Type != " ")
-                    {
-                        <li>@field.Type: @field.Value</li>
-                    }
-                    else
-                    {
-                        <li> </li>
-                    }
+                    int correctionTop = 60;
+                    int correctionLeft = -210;
+                    var top = field.OffsetTop + correctionTop + "px";
+                    var left = field.OffsetLeft + correctionLeft + "px";
+                    <li class="Used" style="position: relative; top: @top; left: @left;">@field.Value</li>
                 }
             </ul>
+            if(User.Identity.IsAuthenticated)
+            {
+                <div align="center">
+                    <input id="Submit1" type="submit" value="Print" onclick="printCard(@Model.Item2.Id)" />
+                </div>
+            }
             <br>
             <div align="center">
-                Rating: @currentCard.Rating 
-                <input id="CardId" type="hidden" value="@currentCard.Id"/>
+                Rating: @Model.Item2.Rating
+                <input id="CardId" type="hidden" value="@Model.Item2.Id" />
                 <br>
                 <input id="RatingIncrease" type="submit" value="+1" onclick="increaseRating(1)" />
                 <input id="RatingIncrease" type="submit" value="+2" onclick="increaseRating(2)" />
                 <input id="RatingIncrease" type="submit" value="+3" onclick="increaseRating(3)" />
             </div>
+            <br><br>
         }
     </div>
+    @{
+    var coordinates = "";
+        foreach (var field in Model.Item2.Fields)
+        {
+            coordinates += field.OffsetTop.ToString();
+            coordinates += ',';
+            coordinates += field.OffsetLeft.ToString();
+            coordinates += ',';
+        }
+        <input id="Coordinates" type="hidden" value="@coordinates" />
+    }
+    <input id="Client" type="hidden" value="@User.Identity.Name" />
     <script>
+        $(document).ready(function() {
+            var coordinatesOfAllFields, index, separateCoordinates;
+            coordinatesOfAllFields = document.getElementById("Coordinates").value;
+            separateCoordinates = coordinatesOfAllFields.split(",");
+            index = 0;
+            return $(".Used").map(function() {
+                var offset;
+                offset = $(this).offset();
+                offset.top = parseInt(separateCoordinates[index]);
+                index++;
+                offset.left = parseInt(separateCoordinates[index]);
+                index++;
+                return $(this).offset(offset);
+            });
+        });
+
         function increaseRating(k) {
             var cardId = document.getElementById("CardId").value;
             $.ajax({
@@ -52,7 +84,109 @@
                 }
             });
         }
+
+        function printCard(ID) {
+            var client = document.getElementById("Client").value;
+            $.ajax({
+                data: {
+                    cardID: ID,
+                    clientName: client
+                },
+                type: 'GET',
+                url: "/Home/PrintCard",
+                success: function () {
+                    window.location.href = "https://localhost:44300/Prints/" + client + ".pdf"
+                }
+            });
+        }
     </script>
-    <link href="~/Content/BusinessCardsStyle.css" rel="stylesheet" />
+    <style>
+        #CardArea {
+            min-height: 200px;
+            max-height: 200px;
+            min-width: 400px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+        }
+
+        ul.Empty, ul.Template1, ul.Template2,
+        ul.Template3, ul.Template4, ul.Template5, ul.Template6,
+        ul.Template7, ul.Template8, ul.Template9 {
+            min-height: 200px;
+            max-height: 200px;
+            min-width: 400px;
+            max-width: 400px;
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877420/EmptyTemplate_j9eubq.bmp");
+            background-repeat: no-repeat;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: auto;
+            margin-top: auto;
+        }
+
+        ul.Template1 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877420/Template1_fv7wpj.bmp");
+        }
+
+        ul.Template2 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877420/Template2_zjxrg7.bmp");
+        }
+
+        ul.Template3 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877420/Template3_kqu8qf.bmp");
+        }
+
+        ul.Template4 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877420/Template4_ri7lst.bmp");
+        }
+
+        ul.Template5 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877424/Template5_xewdtz.bmp");
+        }
+
+        ul.Template6 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877424/Template6_zlxujj.bmp");
+        }
+
+        ul.Template7 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877420/Template7_iculvu.bmp");
+        }
+
+        ul.Template8 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877424/Template8_yp0aem.bmp");
+        }
+
+        ul.Template9 {
+            background-image: url("http://res.cloudinary.com/drez5mnni/image/upload/v1433877424/Template9_b4sk3m.bmp");
+        }
+
+        #fields {
+            min-height: 370px;
+        }
+
+        #tools {
+            border: groove;
+            border-color: black;
+            background-color: white;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            max-width: 100px;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+        #CardArea{
+            margin-top: 115px;
+        }
+    </style>
 </body>
 </html>

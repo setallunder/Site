@@ -221,3 +221,7 @@ G:\itransition\kursSite\task_1\task_1\bin\en\task_1.resources.dll
 G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Resources.Resource.resources
 G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Resources.Resource.en.resources
 G:\itransition\kursSite\task_1\task_1\obj\Debug\en\task_1.resources.dll
+G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Migrations.AddingCoordinates.resources
+G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Migrations.RenameCoordinatesColumns.resources
+G:\itransition\kursSite\task_1\task_1\obj\Debug\task_1.Migrations.AddingCoordinatesColumnsToField.resources
+G:\itransition\kursSite\task_1\task_1\bin\pdfcrowd.dll

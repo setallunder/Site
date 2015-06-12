@@ -129,6 +129,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.3.2.3\lib\net45\Microsoft.Web.WebPages.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="pdfcrowd">
+      <HintPath>..\..\pdfcrowd-2.7-dotnet\bin\pdfcrowd.dll</HintPath>
+    </Reference>
     <Reference Include="SendGrid.SmtpApi">
       <HintPath>..\packages\SendGrid.SmtpApi.1.2.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
     </Reference>
@@ -253,6 +256,18 @@
     <Compile Include="Migrations\201505291953325_AddingCascadeDeletionForBusinessCards.Designer.cs">
       <DependentUpon>201505291953325_AddingCascadeDeletionForBusinessCards.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505311610561_AddingCoordinates.cs" />
+    <Compile Include="Migrations\201505311610561_AddingCoordinates.Designer.cs">
+      <DependentUpon>201505311610561_AddingCoordinates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505311642339_RenameCoordinatesColumns.cs" />
+    <Compile Include="Migrations\201505311642339_RenameCoordinatesColumns.Designer.cs">
+      <DependentUpon>201505311642339_RenameCoordinatesColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505311706522_AddingCoordinatesColumnsToField.cs" />
+    <Compile Include="Migrations\201505311706522_AddingCoordinatesColumnsToField.Designer.cs">
+      <DependentUpon>201505311706522_AddingCoordinatesColumnsToField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -261,6 +276,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProfileModel\BusinessCardToField.cs" />
+    <Compile Include="Models\ProfileModel\DAL.cs" />
     <Compile Include="Models\ProfileModel\Field.cs" />
     <Compile Include="Models\ProfileModel\Profile.cs" />
     <Compile Include="Models\ProfileModel\ProfileModelContext.cs" />
@@ -340,11 +356,13 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Prints\UserPrint.pdf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\DragManager.js" />
     <Content Include="Scripts\JavaScript1.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -357,6 +375,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\PlaceTheFields.js">
+      <DependentUpon>PlaceTheFields.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\SortableCardArea.js">
@@ -408,6 +429,7 @@
     <Content Include="Views\Home\BusinessCardRedactor.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Scripts\SortableCardArea.coffee" />
+    <Content Include="Scripts\PlaceTheFields.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -429,6 +451,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505291953325_AddingCascadeDeletionForBusinessCards.resx">
       <DependentUpon>201505291953325_AddingCascadeDeletionForBusinessCards.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505311610561_AddingCoordinates.resx">
+      <DependentUpon>201505311610561_AddingCoordinates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505311642339_RenameCoordinatesColumns.resx">
+      <DependentUpon>201505311642339_RenameCoordinatesColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505311706522_AddingCoordinatesColumnsToField.resx">
+      <DependentUpon>201505311706522_AddingCoordinatesColumnsToField.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resource.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -1,7 +1,4 @@
-﻿@model task_1.Models.ProfileModel.Profile
-@{
-    ViewBag.Title = Resources.Resource.BusinessCardRedactor;
-}
+﻿@model Tuple<string, task_1.Models.BusinessCard, ICollection<task_1.Models.ProfileModel.Field>>
 
 <!doctype html>
 <html lang="en">
@@ -10,101 +7,106 @@
 </head>
 <body>
     <h2>@Resources.Resource.BusinessCardRedactor</h2>
+    <input id="UserName" type="hidden" name="userName" value="@Model.Item1" />
     <div class="col-md-10">
         <h3 align="center">@Resources.Resource.Redactor</h3>
-        @if (Model.BusinessCards.Count(x => x.Url == "Edit") == 0)
+        @using (Html.BeginForm())
         {
-            using (Html.BeginForm())
-            {
-                <select id="Select1" name="template" title="@Resources.Resource.Template">
-                    <option disabled selected>@Resources.Resource.Template</option>
-                    <option value="Empty">Empty</option>
-                    <option value="Template1">1</option>
-                    <option value="Template2">2</option>
-                    <option value="Template3">3</option>
-                    <option value="Template4">4</option>
-                    <option value="Template5">5</option>
-                    <option value="Template6">6</option>
-                    <option value="Template7">7</option>
-                    <option value="Template8">8</option>
-                    <option value="Template9">9</option>
-                </select>
-                <input type="submit" value="@Resources.Resource.Add" />
-            }
+            <select id="Select1" name="template" title="@Resources.Resource.Template">
+                <option disabled selected>@Resources.Resource.Template</option>
+                <option value="Empty">Empty</option>
+                <option value="Template1">1</option>
+                <option value="Template2">2</option>
+                <option value="Template3">3</option>
+                <option value="Template4">4</option>
+                <option value="Template5">5</option>
+                <option value="Template6">6</option>
+                <option value="Template7">7</option>
+                <option value="Template8">8</option>
+                <option value="Template9">9</option>
+            </select>
+            <input type="submit" value="@Resources.Resource.Add" />
         }
-        @if (Model.BusinessCards.Count(x => x.Url == "Raw") != 0 ||
-            Model.BusinessCards.Count(x => x.Url == "Edit") != 0)
-        {
-            var editingCard = Model.BusinessCards.SingleOrDefault(x => x.Url == "Raw");
-            if (editingCard == null)
-            {
-                editingCard = Model.BusinessCards.SingleOrDefault(x => x.Url == "Edit");
-                <form action="/Home/DeleteBusinessCard" method="post">
-                    <input id="CardId" name="cardId" type="hidden" value="@editingCard.Id" />
-                    <input type="submit" value="@Resources.Resource.Delete" />
-                </form>
-            }
-            else
-            {
-                <input id="CardId" type="hidden" value="-1" />
-            }
+        @{
             <input id="saveBusinessCard" type="submit" value="@Resources.Resource.Save" onclick="sendList()" />
-            <br><br><br>
-            <input id="templateValue" type="hidden" value="@editingCard.Template" />
-            <ul id="CardArea" class="@editingCard.Template">
-                @if (editingCard.Url == "Edit") 
+            <form action="/Home/DeleteBusinessCard" method="post">
+                <input id="CardId" name="cardId" type="hidden" value="@Model.Item2.Id" />
+                <input type="submit" value="@Resources.Resource.Delete" />
+            </form>
+            <br>
+            <input id="templateValue" type="hidden" value="@Model.Item2.Template" />
+            <ul id="CardArea" class="@Model.Item2.Template droppable">
+                @foreach (var f in Model.Item2.Fields)
                 {
-                    foreach (var f in editingCard.Fields)
-                    {
-                        <li>@f.Value</li>
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
-                        <li> </li>
-                    }
+                    <li class="Used draggable">@f.Value</li>
                 }
             </ul>
+            var coordinates = "";
+            foreach (var field in Model.Item2.Fields)
+            {
+                coordinates += field.OffsetTop.ToString();
+                coordinates += ',';
+                coordinates += field.OffsetLeft.ToString();
+                coordinates += ',';
+            }
+            <input id="Coordinates" type="hidden" value="@coordinates" />
         }
+        <br><br>
+        <div align="center">
+            <text id="isSaved"></text>
+        </div>
     </div>
     <div class="col-md-2">
         <h3>Fields</h3>
         <div id="tools" style="height:390px;width:200px;overflow:auto">
             <ul id="fields">
-                @foreach (var field in Model.Fields)
+                @foreach (var field in Model.Item3)
                 {
-                    <li>@field.Value</li>
+                    <li class="NotUsed draggable">@field.Value</li>
                 }
             </ul>
         </div>
     </div>
-    <script src="~/Scripts/SortableCardArea.js"></script>
+    <script src="~/Scripts/DragManager.js"></script>
+    <script src="~/Scripts/PlaceTheFields.js"></script>
     <script>
-    function sendList() {
-        var id = document.getElementById("CardId").value;
-        return $.ajax({
-            type: 'POST',
-            url: "/Home/SaveBusinessCard",
-            success: function(response) {
-                return window.location.href = "UserProfile";
-            },
-            data: {
-                fields: $("#CardArea li").map(function() {
-                    return $(this).text();
-                }).get().join(),
-                template: document.getElementById("templateValue").value,
-                cardId: id
-            }
-        });
-    };
+        DragManager.onDragCancel = function (dragObject) {
+            dragObject.avatar.className = 'NotUsed draggable';
+            document.getElementById("fields").appendChild(dragObject.avatar);
+            dragObject.avatar.recoverPosition();
+        };
+
+        DragManager.onDragEnd = function (dragObject, dropElem) {
+            dragObject.avatar.className = 'Used draggable';
+        };
+
+        function sendList() {
+            var id = document.getElementById("CardId").value;
+            var name = document.getElementById("UserName").value;
+            var allUsed = document.getElementsByClassName("Used");
+            var coord = "";
+            $(".Used").map(function () {
+                var offset = $(this).offset();
+                coord += offset.top.toString() + ',' + offset.left.toString() + ';';
+            });
+            return $.ajax({
+                type: 'POST',
+                url: "/Home/SaveBusinessCard",
+                success: function(response) {
+                    return document.getElementById("isSaved").textContent = "@Resources.Resource.Saved";
+                },
+                data: {
+                    fields: $(".Used").map(function() {
+                        return $(this).text();
+                    }).get().join(),
+                    template: document.getElementById("templateValue").value,
+                    cardId: id,
+                    userName: name,
+                    coordinates: coord
+                }
+            });
+        };
     </script>
     <link href="~/Content/BusinessCardsStyle.css" rel="stylesheet" />
-    <style>
-        #CardArea li{
-            border: dashed;
-        }
-    </style>
 </body>
 </html>

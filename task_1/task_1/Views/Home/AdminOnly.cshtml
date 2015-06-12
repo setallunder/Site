@@ -7,7 +7,7 @@
 
 @foreach (var profile in Model)
 {
-    if(profile.UserName != User.Identity.Name)
+    if (profile.UserName != User.Identity.Name)
     {
         <h3>@profile.UserName</h3>
         <form action="/Home/DeleteUser" method="post">

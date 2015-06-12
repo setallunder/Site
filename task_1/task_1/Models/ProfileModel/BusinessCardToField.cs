@@ -13,5 +13,7 @@ namespace task_1.Models.ProfileModel
         public int BusinessCardId { get; set; }
         [Required]
         public int FieldId { get; set; }
+        public int OffsetTop { get; set; }
+        public int OffsetLeft { get; set; }
     }
 }

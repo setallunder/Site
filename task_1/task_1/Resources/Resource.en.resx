@@ -438,4 +438,7 @@
   <data name="YourSecurityCode" xml:space="preserve">
     <value>Your security code</value>
   </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
 </root>

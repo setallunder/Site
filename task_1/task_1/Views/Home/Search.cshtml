@@ -1,13 +1,12 @@
-﻿@model task_1.Models.ProfileModel.Profile
+﻿@model ICollection<task_1.Models.BusinessCard>
 
 <h1 align="center">@Resources.Resource.SearchResults</h1>
 <br>
 @if (Model != null)
 {
-    
     <br>
     var index = 1;
-    foreach (var businessCard in Model.BusinessCards)
+    foreach (var businessCard in Model)
     {
         <p>
             <a href="@businessCard.Url">@Resources.Resource.BusinessCard №@index @Resources.Resource.Rating: @businessCard.Rating</a>

@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity;
 using task_1.Models.ProfileModel;
 using System.IO;
 using task_1.Filters;
+using System.Net;
+using System.Text;
 
 namespace task_1.Controllers
 {
@@ -15,6 +17,8 @@ namespace task_1.Controllers
     [RequireHttps]
     public class HomeController : Controller
     {
+        pdfcrowd.Client clientPDF = new pdfcrowd.Client("sanyadovskiy", "d7422b94589309fbfab29d6a69fdf10c");
+
         public ActionResult ChangeCulture(string lang)
         {
             string returnUrl = Request.UrlReferrer.AbsolutePath;
@@ -51,71 +55,74 @@ namespace task_1.Controllers
         [HttpGet]
         public ActionResult AdminOnly()
         {
-            var context = new ProfileModelContext();
-            var profiles = from line in context.Profile
-                           select line;
-            return View(profiles.ToList());
+            using (var DAL = new DAL())
+            {
+                return View(DAL.GetAllProfiles());
+            }
         }
 
         [Authorize(Roles="Admin")]
         [HttpPost]
         public ActionResult DeleteUser(int userId)
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.Id == userId);
-            var defaultContext = new ApplicationDbContext();
-            var defaultProfile = defaultContext.Users.SingleOrDefault(x => x.UserName == profile.UserName);
-            defaultContext.Users.Remove(defaultProfile);
-            foreach (var card in profile.BusinessCards)
+            using (var DAL = new DAL())
             {
-                var fields = context.BusinessCardsToFields.Where(x => x.BusinessCardId == card.Id);
-                context.BusinessCardsToFields.RemoveRange(fields);
+                var context = new ApplicationDbContext();
+                var profile = context.Users.SingleOrDefault(x => x.UserName == DAL.GetProfile(userId).UserName);
+                context.Users.Remove(profile);
+                context.SaveChanges();
+                DAL.DeleteProfile(userId);
+                return RedirectToAction("AdminOnly");
             }
-            context.Profile.Remove(profile);
-            defaultContext.SaveChanges();
-            context.SaveChanges();
-            return RedirectToAction("AdminOnly");
         }
 
         [HttpGet]
         [Authorize]
         public ActionResult UserProfile()
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-            if (profile == null)
+            using (var DAL = new DAL())
             {
-                profile = new Profile() { UserName = User.Identity.Name };
-                context.Profile.Add(profile);
-                context.SaveChanges();
+                var profile = DAL.GetProfile(User.Identity.Name);
+                if (profile == null)
+                {
+                    DAL.AddProfile(User.Identity.Name);
+                    profile = DAL.GetProfile(User.Identity.Name);
+                }
+                return View(Tuple.Create(profile.BusinessCards, profile.Fields));
             }
-            return View(profile);
         }
 
         [HttpPost]
         [Authorize]
         public ActionResult UserProfile(Profile profile)
         {
-            return View(profile);
+            return View(Tuple.Create(profile.BusinessCards, profile.Fields));
         }
 
         [HttpGet]
         [Authorize]
         public ActionResult BusinessCardRedactor()
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-            return View(profile);
+            using (var DAL = new DAL())
+            {
+                return View(Tuple.Create(
+                    User.Identity.Name, 
+                    new BusinessCard() { Id = -1, Template = "Empty" }, 
+                    DAL.GetProfile(User.Identity.Name).Fields));
+            }
         }
 
         [HttpPost]
         [Authorize]
         public ActionResult BusinessCardRedactor(string template)
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-            profile.BusinessCards.Add(new BusinessCard { Url = "Raw", Template = template });
-            return View(profile);
+            using (var DAL = new DAL())
+            {
+                return View(Tuple.Create(
+                    User.Identity.Name,
+                    new BusinessCard() { Id = -1, Template = template },
+                    DAL.GetProfile(User.Identity.Name).Fields));
+            }
         }
 
 
@@ -123,157 +130,101 @@ namespace task_1.Controllers
         [Authorize]
         public ActionResult AddField()
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-            profile.Fields.Add(new Field());
-            return View("UserProfile", profile);
+            using (var DAL = new DAL())
+            {
+                var profile = DAL.GetProfile(User.Identity.Name);
+                profile.Fields.Add(new Field());
+                return View("UserProfile", Tuple.Create(profile.BusinessCards, profile.Fields));
+            }
         }
 
         [HttpPost]
         [Authorize]
         public ActionResult EditFields(ICollection<Field> fields)
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-            if (fields != null)
+            using (var DAL = new DAL())
             {
-                while (profile.Fields.Count != fields.Count)
-                {
-                    profile.Fields.Add(new Field());
-                }
-                for (int i = 0; i < fields.Count; i++)
-                {
-                    if (fields.ElementAt(i).Value == null)
-                    {
-                        context.Fields.Remove(profile.Fields.ElementAt(i));
-                    }
-                    else
-                    {
-                        profile.Fields.ElementAt(i).Type = fields.ElementAt(i).Type;
-                        profile.Fields.ElementAt(i).Value = fields.ElementAt(i).Value;
-                    }
-                }
-                context.SaveChanges();
+                DAL.UpdateProfileFields(User.Identity.Name, fields);
+                var profile = DAL.GetProfile(User.Identity.Name);
+                return View("UserProfile", Tuple.Create(profile.BusinessCards, profile.Fields));
             }
-            return View("UserProfile", profile);
         }
 
         [HttpPost]
         [Authorize]
-        public void SaveBusinessCard(string template, string fields, int cardId)
+        public void SaveBusinessCard(string template, string fields, int cardId, string userName, string coordinates)
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-            BusinessCard businessCard = null;
-            if (cardId < 0)
+            using (var DAL = new DAL())
             {
-                businessCard = new BusinessCard() { Url = "Raw", Template = template };
-                profile.BusinessCards.Add(businessCard);
-                context.SaveChanges();
-                profile = context.Profile.SingleOrDefault(x => x.UserName == User.Identity.Name);
-                businessCard = profile.BusinessCards.SingleOrDefault(x => x.Url == "Raw");
-                businessCard.Url = "https://localhost:44300/Home/BusinessCardStorage?userName=" +
-                    User.Identity.Name + "&businessCardId=" + businessCard.Id.ToString();
-            }
-            else
-            {
-                businessCard = profile.BusinessCards.SingleOrDefault(x => x.Id == cardId);
-                foreach (var line in context.BusinessCardsToFields)
+                var profile = DAL.GetProfile(userName);
+                if (cardId < 0)
                 {
-                    if (line.BusinessCardId == businessCard.Id)
-                    {
-                        context.BusinessCardsToFields.Remove(line);
-                    }
-                }
-            }
-            var separateFields = fields.Split(new char[] { ',' });
-            for (int i = 0; i < separateFields.Length && i < 8; i++)
-            {
-                if (separateFields[i] != " ")
-                {
-                    context.BusinessCardsToFields.Add(
-                        new BusinessCardToField()
-                        {
-                            FieldId = profile.Fields.SingleOrDefault(x => x.Value == separateFields[i]).Id,
-                            BusinessCardId = businessCard.Id
-                        });
+                    var businessCard = new BusinessCard() { Url = "Raw", Template = template };
+                    DAL.AddBusinessCardToUser(userName, businessCard);
+                    businessCard = DAL.GetBusinessCardByUrl("Raw");
+                    DAL.SetBusinessCardUrl(businessCard.Id, "https://localhost:44300/Home/BusinessCardStorage?userName=" +
+                        User.Identity.Name + "&businessCardId=" + businessCard.Id.ToString());
+                    var separateFields = fields.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var fieldsCoordinates = coordinates.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    DAL.AddFieldsToBusinessCard(userName, businessCard.Id, separateFields, fieldsCoordinates);
                 }
                 else
                 {
-                    context.BusinessCardsToFields.Add(
-                        new BusinessCardToField()
-                        {
-                            FieldId = -1,
-                            BusinessCardId = businessCard.Id
-                        });
+                    DAL.RemoveAllFieldsFromBusinessCard(cardId);
+                    var separateFields = fields.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var fieldsCoordinates = coordinates.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    DAL.AddFieldsToBusinessCard(userName, cardId, separateFields, fieldsCoordinates);
                 }
             }
-            context.SaveChanges();
         }
 
         [HttpPost]
         [Authorize]
         public ActionResult DeleteBusinessCard(int cardId)
         {
-            var context = new ProfileModelContext();
-            context.BusinessCards.Remove(context.BusinessCards.SingleOrDefault(x => x.Id == cardId));
-            var cardFields = from line in context.BusinessCardsToFields
-                             where line.BusinessCardId == cardId
-                             select line;
-            foreach (var cf in cardFields)
+            using (var DAL = new DAL())
             {
-                context.BusinessCardsToFields.Remove(cf);
+                DAL.DeleteBusinessCard(cardId);
+                return RedirectToAction("UserProfile");
             }
-            context.SaveChanges();
-            return RedirectToAction("UserProfile");
         }
 
         [HttpGet]
         public ActionResult BusinessCardStorage(string userName, int businessCardId)
         {
-            var context = new ProfileModelContext();
-            var profile = context.Profile.SingleOrDefault(x => x.UserName == userName);
-            var businessCard = profile.BusinessCards.Count(x => x.Id == businessCardId);
-            if (businessCard != 0)
+            using(var DAL = new DAL())
             {
-                profile.BusinessCards.SingleOrDefault(x => x.Id == businessCardId).Url = "Current";
-                var fields = profile.Fields;
-                var currentBusinessCardFieldsIds = from a in context.BusinessCardsToFields
-                                                   where a.BusinessCardId == businessCardId
-                                                   select a.FieldId;
-                List<Field> collectionOfFields = new List<Field>();
-                foreach (var id in currentBusinessCardFieldsIds)
+                var businessCard = DAL.GetBusinessCard(businessCardId);
+                if (businessCard != null)
                 {
-                    if (id != -1)
+                    var links = DAL.GetAllBusinessCardToFieldsLinks(businessCardId);
+                    List<Field> collectionOfFields = new List<Field>();
+                    foreach (var link in links)
                     {
-                        collectionOfFields.Add(fields.SingleOrDefault(x => x.Id == id));
+                        var field = DAL.GetField(link.FieldId);
+                        field.OffsetTop = link.OffsetTop;
+                        field.OffsetLeft = link.OffsetLeft;
+                        collectionOfFields.Add(field);
+                    }
+                    businessCard.Fields = collectionOfFields;
+                    if (userName == User.Identity.Name || User.IsInRole("Admin"))
+                    {
+                        var fields = DAL.GetAllProfileFields(userName);
+                        foreach (var f in businessCard.Fields)
+                        {
+                            fields.Remove(fields.SingleOrDefault(x => x.Id == f.Id));
+                        }
+                        return View("BusinessCardRedactor", Tuple.Create(userName, businessCard, fields));
                     }
                     else
                     {
-                        collectionOfFields.Add(new Field() { Type = " ", Value = " "});
+                        return View(Tuple.Create(userName, businessCard));
                     }
-                }
-                profile.BusinessCards.SingleOrDefault(x => x.Id == businessCardId).Fields = collectionOfFields;
-                if (userName == User.Identity.Name)
-                {
-                    profile.BusinessCards.SingleOrDefault(x => x.Id == businessCardId).Url = "Edit";
-                    foreach (var f in profile.BusinessCards.SingleOrDefault(x => x.Id == businessCardId).Fields)
-                    {
-                        if (profile.Fields.Count(x => x.Id == f.Id) != 0)
-                        {
-                            profile.Fields.Remove(profile.Fields.SingleOrDefault(x => x.Id == f.Id));
-                        }
-                    }
-                    return View("BusinessCardRedactor", profile);
                 }
                 else
                 {
-                    return View(profile);
+                    return Redirect("ErrorNotFound");
                 }
-            }
-            else
-            {
-                return Redirect("ErrorNotFound");
             }
         }
 
@@ -287,11 +238,9 @@ namespace task_1.Controllers
         [Authorize]
         public void IncreaseRating(int id, int howMuch)
         {
-            var context = new ProfileModelContext();
-            if (context.BusinessCards.SingleOrDefault(x => x.Id == id).Rating + howMuch < 2000000000)
+            using (var DAL = new DAL())
             {
-                context.BusinessCards.SingleOrDefault(x => x.Id == id).Rating += howMuch;
-                context.SaveChanges();
+                DAL.IncreaseCardRating(id, howMuch);
             }
         }
 
@@ -301,16 +250,59 @@ namespace task_1.Controllers
             var profileSearch = new ProfileSearch();
             profileSearch.Index();
             var profiles = profileSearch.Find(searchRequest);
-            if (profiles.Count(x => x != null) != 0)
+            if (profiles.FirstOrDefault(x => x != null) != default(Profile))
             {
-                int id = profiles.ElementAt(0).Id;
-                var context = new ProfileModelContext();
-                var profile = context.Profile.SingleOrDefault(x => x.Id == id);
-                return View(profile);
+                int id = profiles.FirstOrDefault(x => x != null).Id;
+                using (var DAL = new DAL())
+                {
+                    var profile = DAL.GetProfile(id);
+                    return View(profile.BusinessCards);
+                }
             }
             else
             {
                 return View();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public void PrintCard(int cardID, string clientName)
+        {
+            using (var DAL = new DAL())
+            {
+                var card = DAL.GetBusinessCard(cardID);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(card.Url);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string data = null;
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream receiveStream = response.GetResponseStream();
+                    StreamReader readStream = null;
+
+                    if (response.CharacterSet == null)
+                    {
+                        readStream = new StreamReader(receiveStream);
+                    }
+                    else
+                    {
+                        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                    }
+
+                    data = readStream.ReadToEnd();
+
+                    response.Close();
+                    readStream.Close();
+                }
+                data = data.Replace("relative", "absolute");
+                using (FileStream filestream = new FileStream(@"G:\itransition\kursSite\task_1\task_1\Prints\" +
+                                                                clientName + 
+                                                                ".pdf", FileMode.Create))
+                {
+                    clientPDF.convertHtml(data, filestream);
+                    filestream.Close();
+                }
             }
         }
     }
